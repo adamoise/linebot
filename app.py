@@ -82,6 +82,13 @@ def handle_message(event):
     elif '!h' in _token[0] or '!help' in _token[0]:
         _message = TextSendMessage(text="請輸入:課程, 誠品, 空氣 + <關鍵字>")
         line_bot_api.reply_message(event.reply_token, _message)
+    elif '搜尋' in _token[0]:
+        search_result = get_search_engine(_token[0], 3)
+        reply = "您所搜尋的結果為：\n"
+        line_bot_api.reply_message(event.reply_token,reply)
+        for r in search_result:
+            result_message = r[0] + "("+r[1]+")"
+            line_bot_api.push_message(event.source.user_id, TextSendMessage(text=result_message))
 	
 def find_bookls(kw):
     with open("ESLITE.json",'r') as load_f:
